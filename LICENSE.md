@@ -1,5 +1,6 @@
 The MIT License (MIT)
 
+Copyright (c) 2015 Robotik UTT
 Copyright (c) 2014 Ladislas de Toldi - ladislas at weareleka dot com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

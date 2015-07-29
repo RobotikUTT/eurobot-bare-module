@@ -96,8 +96,12 @@ Help is always more than welcome. If you want to take part in this project, plea
 
 ## Copyright and License
 
+This project is led by the [Robotik UTT team](https://github.com/RobotikUTT/). The [bare module project](https://github.com/RobotikUTT/eurobot-bare-module) that this project use, is based on [Bare arduino project](https://github.com/ladislas/Bare-Arduino-Project) from Ladislas de Toldi.
+
+
     The MIT License (MIT)
 
+    Copyright (c) 2015 Robotik UTT
     Copyright (c) 2014 Ladislas de Toldi - ladislas at weareleka dot com
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
