@@ -4,3 +4,6 @@
 [submodule "NanoPb"]
 	path = NanoPb
 	url = https://github.com/nanopb/nanopb
+[submodule "SeeedMcpCan"]
+	path = lib/seeedMcpCan
+	url = https://github.com/Seeed-Studio/CAN_BUS_Shield
