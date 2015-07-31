@@ -1,3 +1,6 @@
 [submodule "Arduino-Makefile"]
 	path = Arduino-Makefile
 	url = https://github.com/WeAreLeka/Arduino-Makefile
+[submodule "NanoPb"]
+	path = NanoPb
+	url = https://github.com/nanopb/nanopb
