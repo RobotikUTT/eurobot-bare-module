@@ -3,10 +3,10 @@
 	$(MAKE) -C ./src/main/ $(MAKECMDGOALS)
 
 proto:
-	$(MAKE) -C ./lib/BusCan/proto/ all
+	$(MAKE) -C ./lib/CanBus/proto/ all
 
 clean:
-	$(MAKE) -C ./lib/BusCan/proto/ clean
+	$(MAKE) -C ./lib/CanBus/proto/ clean
 	$(MAKE) -C ./src/main/ clean
 
 .PHONY: proto clean
