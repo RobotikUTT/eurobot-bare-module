@@ -3,8 +3,9 @@ bin/*/
 *build-*
 *~
 build-tmp/
-Makefile
+src/*/Makefile
 doc/
 debug.txt
 .ycm_extra_conf.pyc
 .ropeproject
+*.sublime-workspace
