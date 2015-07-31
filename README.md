@@ -1,102 +1,159 @@
-[![Build Status](https://travis-ci.org/ladislas/Bare-Arduino-Project.svg?branch=master)](https://travis-ci.org/ladislas/Bare-Arduino-Project)
-
-# Bare Arduino Project
+# Eurobot Bare Module Project
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents** *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
--   [About](#about)
--   [What you get](#what-you-get)
--   [How to install and use](#how-to-install-and-use)
--   [Bugs](#bugs)
--   [Text editors](#text-editors)
--   [Sublime Text - SublimeClang](#sublime-text---sublimeclang)
--   [Vim - YouCompleteMe](#vim---youcompleteme)
--   [Bonus - `.editorconfig`](#bonus---editorconfig)
--   [Contributing](#contributing)
--   [Copyright and License](#copyright-and-license)
+- [About](#about)
+  - [What are theses modules and for what ?](#what-are-theses-modules-and-for-what-)
+  - [Who we are](#who-we-are)
+- [Workspace configuration](#workspace-configuration)
+  - [Needed software](#needed-software)
+    - [Debian Linux](#debian-linux)
+    - [Archlinux](#archlinux)
+    - [OS X](#os-x)
+  - [Repository configuration](#repository-configuration)
+- [Build and use a module](#build-and-use-a-module)
+- [How to create a new module](#how-to-create-a-new-module)
+- [How to update a module from the bare repository](#how-to-update-a-module-from-the-bare-repository)
+- [Copyright and License](#copyright-and-license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## About
 
-Ever wanted to start a new [Arduino](http://arduino.cc/) project and...
+This is a bare module project from which all of our other module projects are forking from. This repository contains the worskpace (based on [Ladislas's Bare Arduino Project](https://github.com/ladislas/Bare-Arduino-Project)), the shared libraries (like communication between modules) and examples to create new Arduino based modules for our robot.
 
--   **not use** the *terrible* Arduino IDE?
--   **use** your **favorite text editor instead?**
--   **have** decent **code completion** and **syntax checking**?
--   **organize** your `directory tree` **as you like?**
-    -   libraries in `lib`
-    -   sources in `src`
-    -   tests in `test`
-    -   binaries in `bin`
-    -   etc.
--   **use** a newer version of `avr-gcc` such as `4.8.x` or `4.9.x`?
--   **use** an awesome [`Makefile`](https://github.com/sudar/Arduino-Makefile) to compile and upload your code from the `cli`?
+### What are theses modules and for what ?
 
-If you answered **yes** to one of the above, this [Bare Arduino Project](https://github.com/weareleka/arduino-project) is just what you're looking for! :)
+Let start from the beginning! All repositories that begin with eurobot-* on our account concern our participation in the Eurobot contest: An international amateur robotics contest open to teams of young people. Our goal is to create one or two robots with most of the parts reusable every year. This is not so easy because the rules of the contest change every year, so we have to adapt.
 
-## What you get
+In order to reuse most of the parts, we separate the robot in different modules. Generally, we will have:
 
-Based on what we've learned on our [Moti project](http://github.com/weareleka/moti), this repo will allow you to:
+* a core module: an embedded Linux (like Raspberry Pi 2) which run NodeJs scripts.
+* a position module: it will move the robot, calculate the position and trajectories
 
--   move away from the Arduino IDE and use your favorite text editor such as Vim or SublimeText
--   get up and running in less time
--   use `avr-gcc 4.8 or 4.9` to compile your code
--   use `C++11` for your standard coding
--   use `make` to compile, `make upload` to upload, thanks to [Sudar](https://github.com/sudar/)'s incredible project [Arduino-Makefile](https://github.com/sudar/Arduino-Makefile)
--   use our [Travis-CI](https://travis-ci.org) continuous integration configuration and adapt it to suit your needs
+We will then have some other modules that will change regarding the rules of the contest. All of our modules, except the core, have the same minimal hardware:
 
-To put it in a nuttshell, it allows you to **write Arduino code as you ever wanted !**
+* Atmega 328p with an Arduino bootloader
+* MCP2551 and MCP2515 to allow him to communicate via Bus CAN with every other module
 
-## How to install and use
+Each module gets the regulated alimentation of 5V and if needed the direct output of the battery (14 to 16V) which is stopped when you press the big red button of ~~science~~ emergency.
 
-The full procedure is detailed in [INSTALL.md](./INSTALL.md).
+### Who are we ?
 
-## Bugs
+We are the *Robotik UTT* team. An association of student from the University of Technology of Troyes (UTT), a french engineering university.
 
-If you encounter some issues while using the [Bare-Arduino-Project](https://github.com/ladislas/bare-arduino-project), please first report the issue [here in this repo issue tracker](https://github.com/ladislas/bare-arduino-project/issues) and **not in Arduino-Makefile**.
+## Workspace configuration
 
-It will allow us to investigate first and not overflow the Arduino-Makefile issue tracker.
+### Needed software
 
-## Text editors
+* `Git`: To work with this repository
+* `arduino`: To have Arduino libraries and board descriptions
+* `avr-gcc`: A compiler for atmel avr microcontrollers
+* `binutils`: Some tools to create the final binary file
+* `avr-libc`: The standard library for atmel avr microcontrollers
+* `avrdude`: Tool to program atmel avr microcontrollers
+* `python-serial` (with python 2 or 3): Used by Arduino-Makefile to reset before upload Arduino
 
-Because we are so awesome, we also provide your with 2 famous text editors configurations!
+#### Debian Linux
 
-### Sublime Text - SublimeClang
+```Bash
+# First add the git-core ppa
+sudo add-apt-repository ppa:git-core/ppa
 
-To code in C/C++, we highly recommend using [SublimeClang](https://github.com/quarnster/SublimeClang), even if the plugin is not maintained anymore. As far as we can tell, it works beautifully well and will save you a lot of time! :)
+# Update list
+sudo apt-get update && sudo apt-get upgrade
 
-As [quarnster](https://github.com/quarnster/) puts it:
+# Install everything
+sudo apt-get install git arduino gcc-avr binutils avr-libc avrdude python-serial
+```
 
-> Clang plugin for Sublime Text 2 providing auto complete suggestions for C/C++/ObjC/ObjC++. It'll also optionally parse the code as it's typed and show errors and warnings.
+Make sure everything is up and running by running `avr-gcc -v` and `avrdude -v`.
 
-The [`bare-arduino.sublime-project`](./bare-arduino.sublime-project) contains all you need to be up and running. Feel free to customize it to your needs with different `flags` for example.
 
-### Vim - YouCompleteMe
+#### Archlinux
 
-Vim is our default text editor and we use the incredible vim plugin [YouCompleteMe](https://github.com/Valloric) for syntax checking and code completion.
+Arduino is not in the official repository, we will have to use an aur repository. If you don't have it, install yaourt by adding `archlinuxfr` as a `pacman` repository :
 
-As [Valloric](https://github.com/Valloric) puts it:
+```Bash
+sudo bash -c "echo \"     
 
-> YouCompleteMe is a fast, as-you-type, fuzzy-search code completion engine for Vim. It has several completion engines: an identifier-based engine that works with every programming language, a semantic, Clang-based engine that provides native semantic code completion for C/C++/Objective-C/Objective-C++ (from now on referred to as "the C-family languages"), a Jedi-based completion engine for Python, an OmniSharp-based completion engine for C\# and an omnifunc-based completer that uses data from Vim's omnicomplete system to provide semantic completions for many other languages (Ruby, PHP etc.).
+[archlinuxfr]
+SigLevel = Never
+Server = http://repo.archlinux.fr/\\\$arch
+\" >> /etc/pacman.conf"
 
-The [`.ycm_extra_conf.py`](./.ycm_extra_conf.py) file contains everything you need. It should work right out of the box on OS X and need very little modification on Linux!
+# Update your system and programm list and install yaourt
+pacman -Syu yaourt
+```
 
-### Bonus - `.editorconfig`
+Then we can install everything with yaourt (which have the same syntax as pacman) :
 
-To make sure everything is always formatted as you like, you can customize the [`.editorconfig`](./.editorconfig) file to suit your needs.
+```Bash
+yaourt -S git arduino avrdude avr-gcc avr-binutils avr-libc python-pyserial
+```
 
-Please refer to the [official Editorconfig documentation](http://editorconfig.org/) for more details and to download the plugins needed.
+Make sure everything is up and running by running `avr-gcc -v` and `avrdude -v`.
 
-## Contributing
 
-Help is always more than welcome. If you want to take part in this project, please, make sure you read our [Contributing guidelines](./CONTRIBUTING.md).
+#### OS X
+
+Before starting, please make sure you have those installed:
+
+*   [Arduino IDE 1.0.x or 1.6.x](http://arduino.cc/en/main/software#toc2) - Download the app from the website
+*   [Homebrew](http://mxcl.github.io/homebrew/) - Follow the instructions on their website
+*   [Git](http://git-scm.com/) - use `brew install git` to install the latest version
+
+
+Then we can use brew to install everything except python-serial which we will install with pip (installed with python)
+
+```Bash
+brew tap osx-cross/avr
+brew install avr-libc
+brew install avrdude
+brew install python
+pip install pyserial
+```
+
+### Repository configuration
+
+After cloning the repository and before using or working inside, you will have to configure it. 
+
+First `cd` to your repository folder:
+
+```Bash
+# Update git that are inside our repository (like arduino-makefile)
+git submodule update --init --recursive
+```
+
+You will have to create your platform-specific Makefile. Go to the source folder `src/main`. Generally, you will have only a `main` directory that contains the source code for Arduino, but sometime, you will have another folder that will contain code for a second Arduino in the module or a hardware test code for the module. You will have to create a Makefile for each src/XXXX folder.
+
+```Bash
+cd src/XXXX
+
+# Copy `makefile-linux.mk` or `makefile-osx.mk` in the current directory as `Makefile`
+cp ../makefile-linux.mk ./Makefile
+
+# Edit the Makefile to suit your needs
+nano Makefile
+```
+
+## Build and use a module
+
+TODO
+
+## How to create a new module
+
+TODO
+
+## How to update a module from the bare repository
+
+TODO
 
 ## Copyright and License
 
-This project is led by the [Robotik UTT team](https://github.com/RobotikUTT/). The [bare module project](https://github.com/RobotikUTT/eurobot-bare-module) that this project use, is based on [Bare arduino project](https://github.com/ladislas/Bare-Arduino-Project) from Ladislas de Toldi.
+This project is led by the [Robotik UTT team](https://github.com/RobotikUTT/). The [Eurobot bare module project](https://github.com/RobotikUTT/eurobot-bare-module) that this project use, is based on [Bare arduino project](https://github.com/ladislas/Bare-Arduino-Project) from Ladislas de Toldi.
 
 
     The MIT License (MIT)
