@@ -1,0 +1,3 @@
+.DEFAULT_GOAL := .DEFAULT
+.DEFAULT:
+	$(MAKE) -C ./src/main/ $(MAKECMDGOALS)
