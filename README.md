@@ -26,7 +26,9 @@ This is a bare module project from which all of our other module projects are fo
 
 ### What are theses modules and for what ?
 
-Let start from the beginning! All repositories that begin with eurobot-* on our account concern our participation in the Eurobot contest: An international amateur robotics contest open to teams of young people. Our goal is to create one or two robots with most of the parts reusable every year. This is not so easy because the rules of the contest change every year, so we have to adapt.
+Let start from the beginning!
+
+All repositories that begin with `eurobot-*` on our account concern our participation in the *Eurobot contest*: An international amateur robotics contest open to teams of young people. Our goal is to create one or two robots with most of the parts reusable every year. This is not so easy because the rules of the contest change every year, so we have to adapt.
 
 In order to reuse most of the parts, we separate the robot in different modules. Generally, we will have:
 
