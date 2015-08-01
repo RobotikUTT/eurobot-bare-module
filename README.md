@@ -6,7 +6,7 @@
 
 - [About](#about)
   - [What are theses modules and for what ?](#what-are-theses-modules-and-for-what-)
-  - [Who we are](#who-we-are)
+  - [Who are we ?](#who-are-we-)
 - [Workspace configuration](#workspace-configuration)
   - [Needed software](#needed-software)
     - [Debian Linux](#debian-linux)
@@ -79,7 +79,7 @@ Make sure everything is up and running by running `avr-gcc -v` and `avrdude -v`.
 Arduino is not in the official repository, we will have to use an aur repository. If you don't have it, install yaourt by adding `archlinuxfr` as a `pacman` repository :
 
 ```Bash
-sudo bash -c "echo \"     
+sudo bash -c "echo \"
 
 [archlinuxfr]
 SigLevel = Never
@@ -125,7 +125,7 @@ After cloning the repository and before using or working inside, you will have t
 First `cd` to your repository folder:
 
 ```Bash
-# Update git that are inside our repository (like arduino-makefile)
+# Update git that are inside our repository (arduino-makefile and nanopb)
 git submodule update --init --recursive
 ```
 
@@ -140,6 +140,10 @@ cp ../makefile-linux.mk ./Makefile
 # Edit the Makefile to suit your needs
 nano Makefile
 ```
+
+TODO : add sudo pacman -S python2-protobuf
+TODO : add make -C NanoPb/generator/proto
+
 
 ## Build and use a module
 
