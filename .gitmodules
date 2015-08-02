@@ -2,7 +2,7 @@
 	path = Arduino-Makefile
 	url = https://github.com/WeAreLeka/Arduino-Makefile
 [submodule "NanoPb"]
-	path = NanoPb
+	path = lib/pb/NanoPb
 	url = https://github.com/nanopb/nanopb
 [submodule "lib/mcp_can"]
 	path = lib/mcp_can
