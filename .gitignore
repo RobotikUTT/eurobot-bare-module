@@ -9,5 +9,5 @@ debug.txt
 .ycm_extra_conf.pyc
 .ropeproject
 *.sublime-workspace
-lib/CanBus/proto/*.pb.c
-lib/CanBus/proto/*.pb.h
+lib/CanBus/*.pb.c
+lib/CanBus/*.pb.h
