@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# Used for CI. Do not run on your computer, use your package manager instead.
 echo "Installing dependencies needed to build the sources and tests..."
 
 ARDUINO_BASENAME="arduino-1.0.6"
@@ -22,6 +23,6 @@ wget "$AVR_GCC_URL" -O "$AVR_GCC_FILE"
 tar -xzf "$AVR_GCC_FILE"
 sudo mv "$AVR_GCC_BASENAME/hardware/tools/avr" "$AVR_GCC"
 
-echo "Installation of dependencies is complete, we are now going to run some tests..."
+echo "Installing submodules"
 
-source "$SCRIPTS_DIR/runtests.sh"
+git submodule update --init --recursive

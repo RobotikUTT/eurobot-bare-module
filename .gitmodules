@@ -4,3 +4,6 @@
 [submodule "lib/mcp_can"]
 	path = lib/mcp_can
 	url = https://github.com/Seeed-Studio/CAN_BUS_Shield
+[submodule "arduino-mock"]
+	path = arduino-mock
+	url = https://github.com/ikeyasu/arduino-mock

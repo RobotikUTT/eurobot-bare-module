@@ -1,64 +1,60 @@
-# Eurobot Bare Module Project
-
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents** *generated with [DocToc](http://doctoc.herokuapp.com/)*
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [About](#about)
-  - [What are theses modules and for what ?](#what-are-theses-modules-and-for-what-)
-  - [Who are we ?](#who-are-we-)
-- [Workspace configuration](#workspace-configuration)
-  - [Needed software](#needed-software)
-    - [Debian Linux](#debian-linux)
-    - [Archlinux](#archlinux)
-    - [OS X](#os-x)
-  - [Repository configuration](#repository-configuration)
-- [Build and use a module](#build-and-use-a-module)
-- [How to create a new module](#how-to-create-a-new-module)
-- [How to update a module from the bare repository](#how-to-update-a-module-from-the-bare-repository)
-- [Copyright and License](#copyright-and-license)
+- [Eurobot Bare Module Project](#eurobot-bare-module-project)
+  - [About](#about)
+    - [Motivations](#motivations)
+    - [Who are we ?](#who-are-we-)
+  - [Workspace configuration](#workspace-configuration)
+    - [Dependencies](#dependencies)
+      - [Debian](#debian)
+      - [Archlinux](#archlinux)
+        - [Install yaourt](#install-yaourt)
+      - [Install dependencies](#install-dependencies)
+      - [OS X](#os-x)
+    - [Repository configuration](#repository-configuration)
+  - [Build and use a module](#build-and-use-a-module)
+  - [How to create a new module](#how-to-create-a-new-module)
+  - [How to update a module from the bare repository](#how-to-update-a-module-from-the-bare-repository)
+  - [Copyright and License](#copyright-and-license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+# Eurobot Bare Module Project
+
 ## About
 
-This is a bare module project from which all of our other module projects are forking from. This repository contains the worskpace (based on [Ladislas's Bare Arduino Project](https://github.com/ladislas/Bare-Arduino-Project)), the shared libraries (like communication between modules) and examples to create new Arduino based modules for our robot.
+This is a bare module project from which all of our other module projects are forking from. This repository contains an example structure (based on [Ladislas's Bare Arduino Project](https://github.com/ladislas/Bare-Arduino-Project)) and the common librairies (like mcp_can).
 
-### What are theses modules and for what ?
 
-Let start from the beginning!
+### Motivations
 
-All repositories that begin with `eurobot-*` on our account concern our participation in the *Eurobot contest*: An international amateur robotics contest open to teams of young people. Our goal is to create one or two robots with most of the parts reusable every year. This is not so easy because the rules of the contest change every year, so we have to adapt.
+All repositories beginning with `eurobot-*` are part of the Robotik UTT participation for the [eurobot](http://www.eurobot.org/) contest.
 
-In order to reuse most of the parts, we separate the robot in different modules. Generally, we will have:
+In order to reuse some parts every year, the robot code is splitted between independent modules.  
 
-* a core module: an embedded Linux (like Raspberry Pi 2) which run NodeJs scripts.
-* a position module: it will move the robot, calculate the position and trajectories
-
-We will then have some other modules that will change regarding the rules of the contest. All of our modules, except the core, have the same minimal hardware:
-
+Each module has the following minimal hardware:
 * Atmega 328p with an Arduino bootloader
-* MCP2551 and MCP2515 to allow him to communicate via Bus CAN with every other module
-
-Each module gets the regulated alimentation of 5V and if needed the direct output of the battery (14 to 16V) which is stopped when you press the big red button of ~~science~~ emergency.
+* MCP2551 and MCP2515 to provide a CAN Bus interface
 
 ### Who are we ?
 
-We are the *Robotik UTT* team. An association of student from the University of Technology of Troyes (UTT), a french engineering university.
+We are the *Robotik UTT* team. A student club of Robotics, from the University of Technology of Troyes (France).
+
 
 ## Workspace configuration
 
-### Needed software
+### Dependencies
 
-* `Git`: To work with this repository
-* `arduino`: To have Arduino libraries and board descriptions
-* `avr-gcc`: A compiler for atmel avr microcontrollers
-* `binutils`: Some tools to create the final binary file
+* `arduino`: Provide arduino librairies
+* `avr-gcc`: Compiler for atmel avr microcontrollers
 * `avr-libc`: The standard library for atmel avr microcontrollers
-* `avrdude`: Tool to program atmel avr microcontrollers
-* `python-serial` (with python 2 or 3): Used by Arduino-Makefile to reset before upload Arduino
+* `avrdude`: Programmer for atmel avr microcontrollers
+* `binutils`: Binary tools
+* `python-serial` (with python 2 or 3): Reset arduino before programming it
 
-#### Debian Linux
+#### Debian
 
 ```Bash
 # First add the git-core ppa
@@ -67,16 +63,17 @@ sudo add-apt-repository ppa:git-core/ppa
 # Update list
 sudo apt-get update && sudo apt-get upgrade
 
-# Install everything
+# Install dependencies
 sudo apt-get install git arduino gcc-avr binutils avr-libc avrdude python-serial
 ```
-
-Make sure everything is up and running by running `avr-gcc -v` and `avrdude -v`.
+Check that everything is up: `avr-gcc -v && avrdude -v`.
 
 
 #### Archlinux
 
-Arduino is not in the official repository, we will have to use an aur repository. If you don't have it, install yaourt by adding `archlinuxfr` as a `pacman` repository :
+Arduino is not in the official repository, but in community-driven repositories (AUR).
+
+##### Install yaourt
 
 ```Bash
 sudo bash -c "echo \"
@@ -90,25 +87,20 @@ Server = http://repo.archlinux.fr/\\\$arch
 pacman -Syu yaourt
 ```
 
-Then we can install everything with yaourt (which have the same syntax as pacman) :
+#### Install dependencies
 
 ```Bash
 yaourt -S git arduino avrdude avr-gcc avr-binutils avr-libc python-pyserial
 ```
 
-Make sure everything is up and running by running `avr-gcc -v` and `avrdude -v`.
+Check that everything is up: `avr-gcc -v && avrdude -v`.
 
 
 #### OS X
 
-Before starting, please make sure you have those installed:
-
 *   [Arduino IDE 1.0.x or 1.6.x](http://arduino.cc/en/main/software#toc2) - Download the app from the website
 *   [Homebrew](http://mxcl.github.io/homebrew/) - Follow the instructions on their website
-*   [Git](http://git-scm.com/) - use `brew install git` to install the latest version
 
-
-Then we can use brew to install everything except python-serial which we will install with pip (installed with python)
 
 ```Bash
 brew tap osx-cross/avr
@@ -118,18 +110,20 @@ brew install python
 pip install pyserial
 ```
 
-### Repository configuration
+Check that everything is up: `avr-gcc -v && avrdude -v`.
 
-After cloning the repository and before using or working inside, you will have to configure it. 
+
+### Repository configuration
 
 First `cd` to your repository folder:
 
 ```Bash
-# Update git that are inside our repository (arduino-makefile and nanopb)
+# Update git submodules
 git submodule update --init --recursive
 ```
 
-You will have to create your platform-specific Makefile. Go to the source folder `src/main`. Generally, you will have only a `main` directory that contains the source code for Arduino, but sometime, you will have another folder that will contain code for a second Arduino in the module or a hardware test code for the module. You will have to create a Makefile for each src/XXXX folder.
+You will have to create your platform-specific Makefile. Examples are given in the `src` folder.
+Each `src/XXXX` contains the source code for an Arduino: make sure that each of these folders contains it's own Makefile.
 
 ```Bash
 cd src/XXXX
@@ -140,10 +134,6 @@ cp ../makefile-linux.mk ./Makefile
 # Edit the Makefile to suit your needs
 nano Makefile
 ```
-
-TODO : add sudo pacman -S python2-protobuf
-TODO : add make -C NanoPb/generator/proto
-
 
 ## Build and use a module
 
@@ -159,28 +149,6 @@ TODO
 
 ## Copyright and License
 
-This project is led by the [Robotik UTT team](https://github.com/RobotikUTT/). The [Eurobot bare module project](https://github.com/RobotikUTT/eurobot-bare-module) that this project use, is based on [Bare arduino project](https://github.com/ladislas/Bare-Arduino-Project) from Ladislas de Toldi.
+This project is led by the [Robotik UTT team](https://github.com/RobotikUTT/). Thanks to [Bare arduino project](https://github.com/ladislas/Bare-Arduino-Project) from Ladislas de Toldi for the structure.
 
-
-    The MIT License (MIT)
-
-    Copyright (c) 2015 Robotik UTT
-    Copyright (c) 2014 Ladislas de Toldi - ladislas at weareleka dot com
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
+See the LICENSE.md file
