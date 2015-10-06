@@ -23,6 +23,6 @@ wget "$AVR_GCC_URL" -O "$AVR_GCC_FILE"
 tar -xzf "$AVR_GCC_FILE"
 sudo mv "$AVR_GCC_BASENAME/hardware/tools/avr" "$AVR_GCC"
 
-echo "Installing submodules"
+echo "Installing makefile..."
 
-git submodule update --init --recursive
+cp "$CWD/src/Makefile-Linux.mk" "$CWD/src/main/Makefile"
